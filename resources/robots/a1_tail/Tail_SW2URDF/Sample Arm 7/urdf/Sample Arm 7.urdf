@@ -1,0 +1,433 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- This URDF was automatically created by SolidWorks to URDF Exporter! Originally created by Stephen Brawner (brawner@gmail.com) 
+     Commit Version: 1.6.0-4-g7f85cfe  Build Version: 1.6.7995.38578
+     For more information, please see http://wiki.ros.org/sw_urdf_exporter -->
+<robot
+  name="Sample Arm 7">
+  <link
+    name="base_link">
+    <inertial>
+      <origin
+        xyz="0.00368134633125201 0.00383986483493379 0.0260332873989196"
+        rpy="0 0 0" />
+      <mass
+        value="0.555746166352667" />
+      <inertia
+        ixx="0.000564569531443187"
+        ixy="-2.1594155115282E-05"
+        ixz="-1.97006796795357E-06"
+        iyy="0.000443501475714245"
+        iyz="-2.02970909322008E-05"
+        izz="0.000973839619785963" />
+    </inertial>
+    <visual>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://Sample Arm 7/meshes/base_link.STL" />
+      </geometry>
+      <material
+        name="">
+        <color
+          rgba="0.752941176470588 0.752941176470588 0.752941176470588 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://Sample Arm 7/meshes/base_link.STL" />
+      </geometry>
+    </collision>
+  </link>
+  <link
+    name="motor_bracket">
+    <inertial>
+      <origin
+        xyz="-2.88836212974676E-17 0.0049442016257755 -0.000718517500351113"
+        rpy="0 0 0" />
+      <mass
+        value="0.0361562335715199" />
+      <inertia
+        ixx="2.53367831062421E-05"
+        ixy="-8.748397385993E-22"
+        ixz="6.79410470129006E-12"
+        iyy="3.34621730544853E-05"
+        iyz="3.39270759533818E-23"
+        izz="8.51428709634465E-06" />
+    </inertial>
+    <visual>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://Sample Arm 7/meshes/motor_bracket.STL" />
+      </geometry>
+      <material
+        name="">
+        <color
+          rgba="0.792156862745098 0.819607843137255 0.933333333333333 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://Sample Arm 7/meshes/motor_bracket.STL" />
+      </geometry>
+    </collision>
+  </link>
+  <joint
+    name="tail_shoulder_yaw_joint"
+    type="revolute">
+    <origin
+      xyz="0 -0.0250000074045035 0.0704999736568643"
+      rpy="1.5707963267949 0 0" />
+    <parent
+      link="base_link" />
+    <child
+      link="motor_bracket" />
+    <axis
+      xyz="0 1 0" />
+    <limit
+      lower="-3.1416"
+      upper="3.1416"
+      effort="0"
+      velocity="0" />
+  </joint>
+  <link
+    name="link_1_1">
+    <inertial>
+      <origin
+        xyz="0.0905473652790637 0.000711260512443836 0.0132318529133212"
+        rpy="0 0 0" />
+      <mass
+        value="0.10522422497625" />
+      <inertia
+        ixx="4.9170948109236E-05"
+        ixy="3.44838343166424E-07"
+        ixz="-6.33912476285388E-06"
+        iyy="0.000566745463767469"
+        iyz="1.86818652106595E-09"
+        izz="0.000611643830976391" />
+    </inertial>
+    <visual>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://Sample Arm 7/meshes/link_1_1.STL" />
+      </geometry>
+      <material
+        name="">
+        <color
+          rgba="0.792156862745098 0.819607843137255 0.933333333333333 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://Sample Arm 7/meshes/link_1_1.STL" />
+      </geometry>
+    </collision>
+  </link>
+  <joint
+    name="tail_shoulder_pitch_joint"
+    type="revolute">
+    <origin
+      xyz="0 0.052 0"
+      rpy="-1.5708 0 1.5708" />
+    <parent
+      link="motor_bracket" />
+    <child
+      link="link_1_1" />
+    <axis
+      xyz="0 0 -1" />
+    <limit
+      lower="-1.5708"
+      upper="1.5708"
+      effort="0"
+      velocity="0" />
+  </joint>
+  <link
+    name="link_2">
+    <inertial>
+      <origin
+        xyz="-6.96295926472246E-09 -0.080424811499244 -5.62814089838616E-05"
+        rpy="0 0 0" />
+      <mass
+        value="0.0763189346847985" />
+      <inertia
+        ixx="0.000193794609294917"
+        ixy="-4.46258884884084E-12"
+        ixz="1.575349661543E-11"
+        iyy="1.19346850461047E-05"
+        iyz="-3.84316854395656E-07"
+        izz="0.000200914946760075" />
+    </inertial>
+    <visual>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://Sample Arm 7/meshes/link_2.STL" />
+      </geometry>
+      <material
+        name="">
+        <color
+          rgba="0.752941176470588 0.752941176470588 0.752941176470588 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://Sample Arm 7/meshes/link_2.STL" />
+      </geometry>
+    </collision>
+  </link>
+  <joint
+    name="elbow_joint"
+    type="revolute">
+    <origin
+      xyz="0.22094 0.00071851 0"
+      rpy="0 0 0" />
+    <parent
+      link="link_1_1" />
+    <child
+      link="link_2" />
+    <axis
+      xyz="0 0 1" />
+    <limit
+      lower="0"
+      upper="1.5708"
+      effort="0"
+      velocity="0" />
+  </joint>
+  <link
+    name="gripper">
+    <inertial>
+      <origin
+        xyz="0.0573436204221779 -0.0395765636354563 -0.00060674366183752"
+        rpy="0 0 0" />
+      <mass
+        value="0.203470349399239" />
+      <inertia
+        ixx="5.65426795005758E-05"
+        ixy="-3.99750990342292E-05"
+        ixz="1.78408717761704E-07"
+        iyy="0.000230730550351754"
+        iyz="-2.27266291884127E-07"
+        izz="0.00026423414761495" />
+    </inertial>
+    <visual>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://Sample Arm 7/meshes/gripper.STL" />
+      </geometry>
+      <material
+        name="">
+        <color
+          rgba="0.752941176470588 0.752941176470588 0.752941176470588 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://Sample Arm 7/meshes/gripper.STL" />
+      </geometry>
+    </collision>
+  </link>
+  <joint
+    name="gripper_fixed_joint"
+    type="fixed">
+    <origin
+      xyz="-0.0444441987014288 -0.336718519125746 0"
+      rpy="3.14159265358979 0 -1.57079632679503" />
+    <parent
+      link="link_2" />
+    <child
+      link="gripper" />
+    <axis
+      xyz="0 0 0" />
+  </joint>
+  <link
+    name="link_1_2">
+    <inertial>
+      <origin
+        xyz="-0.0314199921617841 -0.00071837333398065 0.00385190919585071"
+        rpy="0 0 0" />
+      <mass
+        value="0.0948432334787272" />
+      <inertia
+        ixx="4.75228867726751E-05"
+        ixy="9.01698567690483E-10"
+        ixz="-9.0340126283445E-06"
+        iyy="0.000462256039513398"
+        iyz="1.93962855038886E-11"
+        izz="0.000505534714703268" />
+    </inertial>
+    <visual>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://Sample Arm 7/meshes/link_1_2.STL" />
+      </geometry>
+      <material
+        name="">
+        <color
+          rgba="0.792156862745098 0.819607843137255 0.933333333333333 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://Sample Arm 7/meshes/link_1_2.STL" />
+      </geometry>
+    </collision>
+  </link>
+  <joint
+    name="link_1_2"
+    type="fixed">
+    <origin
+      xyz="0.131599993038923 0 -0.00899999748365095"
+      rpy="-3.14159265358979 0 0" />
+    <parent
+      link="link_1_1" />
+    <child
+      link="link_1_2" />
+    <axis
+      xyz="0 0 0" />
+  </joint>
+  <link
+    name="motor_2">
+    <inertial>
+      <origin
+        xyz="0.000415160647521215 -0.00599711221017367 0.000853420896040624"
+        rpy="0 0 0" />
+      <mass
+        value="0.293750772256237" />
+      <inertia
+        ixx="0.000131437212880793"
+        ixy="-1.45875965303565E-07"
+        ixz="-5.95974642870492E-06"
+        iyy="0.000249003244796522"
+        iyz="8.86875080429919E-08"
+        izz="0.000138018696135985" />
+    </inertial>
+    <visual>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://Sample Arm 7/meshes/motor_2.STL" />
+      </geometry>
+      <material
+        name="">
+        <color
+          rgba="0.752941176470588 0.752941176470588 0.752941176470588 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://Sample Arm 7/meshes/motor_2.STL" />
+      </geometry>
+    </collision>
+  </link>
+  <joint
+    name="motor_2"
+    type="fixed">
+    <origin
+      xyz="0.0642499999999967 0.0520000037921046 0"
+      rpy="-3.14159265358978 1.04719755119654 1.57079632679491" />
+    <parent
+      link="motor_bracket" />
+    <child
+      link="motor_2" />
+    <axis
+      xyz="0 0 0" />
+  </joint>
+  <link
+    name="motor_3">
+    <inertial>
+      <origin
+        xyz="0.0010594901135863 -0.005997111629483 -0.000262627762671955"
+        rpy="0 0 0" />
+      <mass
+        value="0.293750772256237" />
+      <inertia
+        ixx="0.000131437217831497"
+        ixy="-1.45906394621066E-07"
+        ixz="-5.95975140378827E-06"
+        iyy="0.000249003244796523"
+        iyz="8.86902171652028E-08"
+        izz="0.000138018691185278" />
+    </inertial>
+    <visual>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://Sample Arm 7/meshes/motor_3.STL" />
+      </geometry>
+      <material
+        name="">
+        <color
+          rgba="0.752941176470588 0.752941176470588 0.752941176470588 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://Sample Arm 7/meshes/motor_3.STL" />
+      </geometry>
+    </collision>
+  </link>
+  <joint
+    name="motor_3"
+    type="fixed">
+    <origin
+      xyz="-0.0642499999999978 0.0520000040598411 0"
+      rpy="3.14159265358978 1.04719755119673 -1.5707963267949" />
+    <parent
+      link="motor_bracket" />
+    <child
+      link="motor_3" />
+    <axis
+      xyz="0 0 0" />
+  </joint>
+</robot>
