@@ -29,8 +29,17 @@
 # Copyright (c) 2021 ETH Zurich, Nikita Rudin
 
 from legged_gym.envs.base.legged_robot_config import LeggedRobotCfg, LeggedRobotCfgPPO
+''' TODO: [IMPLEMENT] Add motor parameters to URDF. See urdf/XML/joint. (Test motor to determine parameters) 
+'''
+class A1TailFlatCfg( LeggedRobotCfg ):
+    class env( LeggedRobotCfg.env ):
+        num_actions = 15 # number of joints
+        num_observations = 57 # flat: 57, rough: 244
 
-class A1TailRoughCfg( LeggedRobotCfg ):
+    class terrain( LeggedRobotCfg.terrain ):
+        mesh_type = 'plane'
+        measure_heights = False
+
     class init_state( LeggedRobotCfg.init_state ):
         pos = [0.0, 0.0, 0.42] # x,y,z [m]
         default_joint_angles = { # = target angles [rad] when action = 0.0
@@ -51,13 +60,13 @@ class A1TailRoughCfg( LeggedRobotCfg ):
 
             'tail_shoulder_yaw_joint':  0,  # [rad]
             'tail_shoulder_pitch_joint': 0, # [rad]
-            'tail_elbow_joint': 0,   # [rad]
+            'tail_elbow_joint': 0   # [rad]
         }
 
     class control( LeggedRobotCfg.control ):
         # PD Drive parameters:
         control_type = 'P'
-        stiffness = {'hip': 20, 'thigh': 20, 'calf': 20, 'tail': 0}  # [N*m/rad]
+        stiffness = {'hip': 20, 'thigh': 20, 'calf': 20, 'tail': 1}  # [N*m/rad]
         damping = {'hip': 0.5, 'thigh': 0.5, 'calf': 0.5, 'tail': 0}     # [N*m*s/rad]
         # action scale: target angle = actionScale * action + defaultAngle
         action_scale = 0.25
@@ -73,17 +82,38 @@ class A1TailRoughCfg( LeggedRobotCfg ):
         self_collisions = 1 # 1 to disable, 0 to enable...bitwise filter
   
     class rewards( LeggedRobotCfg.rewards ):
+
+        class scales( LeggedRobotCfg.rewards.scales ):
+            # Rewards in use.
+            tracking_lin_vel=1.0
+            tracking_ang_vel = 0.5   
+            powers=-0.0001
+
+            # Set remaining reward terms to zero.
+            termination = -0.0        
+            lin_vel_z = 0.0
+            ang_vel_xy = -0.0
+            orientation = -0.0
+            torques = -0.0
+            dof_vel = -0.0
+            dof_acc = -0.0
+            base_height = -0. 
+            feet_air_time =  0.0
+            collision = -0.
+            feet_stumble = -0.0 
+            action_rate = -0.0
+            stand_still = -0.
+            
         soft_dof_pos_limit = 0.9
         base_height_target = 0.25
-        class scales( LeggedRobotCfg.rewards.scales ):
-            torques = -0.0002
-            dof_pos_limits = -10.0
+        soft_torque_limit = 0.9
+        only_positive_rewards = False
 
-class A1TailRoughCfgPPO( LeggedRobotCfgPPO ):
+class A1TailFlatCfgPPO( LeggedRobotCfgPPO ):
     class algorithm( LeggedRobotCfgPPO.algorithm ):
         entropy_coef = 0.01
     class runner( LeggedRobotCfgPPO.runner ):
         run_name = ''
-        experiment_name = 'rough_a1_tail'
+        experiment_name = 'flat_a1_tail'
 
   
