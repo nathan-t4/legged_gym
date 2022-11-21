@@ -40,6 +40,10 @@ class A1TailFlatCfg( LeggedRobotCfg ):
         mesh_type = 'plane'
         measure_heights = False
 
+    class commands( LeggedRobotCfg.commands):
+        class ranges (LeggedRobotCfg.commands.ranges):
+            ang_vel_yaw = [0, 0]
+
     class init_state( LeggedRobotCfg.init_state ):
         pos = [0.0, 0.0, 0.42] # x,y,z [m]
         default_joint_angles = { # = target angles [rad] when action = 0.0
@@ -80,9 +84,9 @@ class A1TailFlatCfg( LeggedRobotCfg ):
         penalize_contacts_on = ["thigh", "calf", "tail"] #
         terminate_after_contacts_on = ["base"]
         self_collisions = 1 # 1 to disable, 0 to enable...bitwise filter
+        flip_visual_attachments = False
   
     class rewards( LeggedRobotCfg.rewards ):
-
         class scales( LeggedRobotCfg.rewards.scales ):
             # Rewards in use.
             tracking_lin_vel=1.0
@@ -103,11 +107,12 @@ class A1TailFlatCfg( LeggedRobotCfg ):
             feet_stumble = -0.0 
             action_rate = -0.0
             stand_still = -0.
-            
-        soft_dof_pos_limit = 0.9
-        base_height_target = 0.25
-        soft_torque_limit = 0.9
-        only_positive_rewards = False
+        
+        only_positive_rewards = True # if true negative total rewards are clipped at zero (avoids early termination problems)
+        tracking_sigma = 0.1 # tracking reward = exp(-error^2/sigma)
+        soft_dof_pos_limit = 0.9 # percentage of urdf limits, values above this limit are penalized
+        soft_dof_vel_limit = 0.9
+        soft_torque_limit = 1.
 
 class A1TailFlatCfgPPO( LeggedRobotCfgPPO ):
     class algorithm( LeggedRobotCfgPPO.algorithm ):

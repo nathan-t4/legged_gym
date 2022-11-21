@@ -577,7 +577,7 @@
 
   <!-- APPEND TAIL URDF -->
 
-  <link name="base_link">
+  <link name="tail_base_link">
     <inertial>
       <origin xyz="0.00368134633125201 0.00383986483493379 0.0260332873989196" rpy="0 0 0" />
       <mass value="0.555746166352667" />
@@ -602,9 +602,9 @@
   <joint name="tail_mount" type="fixed">
     <origin rpy="0 0 -1.5708" xyz="-0.045 0 0.055"/>
     <parent link="trunk"/>
-    <child link="base_link"/>
+    <child link="tail_base_link"/>
   </joint>
-  <link name="motor_bracket">
+  <link name="tail_motor_bracket">
     <inertial>
       <origin xyz="-2.88836212974676E-17 0.0049442016257755 -0.000718517500351113" rpy="0 0 0" />
       <mass value="0.0361562335715199" />
@@ -628,12 +628,12 @@
   </link>
   <joint name="tail_shoulder_yaw_joint" type="revolute">
     <origin xyz="0 -0.0250000074045035 0.0704999736568643" rpy="1.5707963267949 0 0" />
-    <parent link="base_link" />
-    <child link="motor_bracket" />
+    <parent link="tail_base_link" />
+    <child link="tail_motor_bracket" />
     <axis xyz="0 1 0" />
     <limit lower="-3.1416" upper="3.1416" effort="3.2" velocity="10" />
   </joint>
-  <link name="link_1_1">
+  <link name="tail_link_1_1">
     <inertial>
       <origin xyz="0.0905473652790637 0.000711260512443836 0.0132318529133212" rpy="0 0 0" />
       <mass value="0.10522422497625" />
@@ -657,13 +657,13 @@
   </link>
   <joint name="tail_shoulder_pitch_joint" type="revolute">
     <origin xyz="0 0.052 0" rpy="-1.5708 0 1.5708" />
-    <parent link="motor_bracket" />
-    <child link="link_1_1" />
+    <parent link="tail_motor_bracket" />
+    <child link="tail_link_1_1" />
     <axis xyz="0 0 -1" />
     <limit lower="-1.5708" upper="1.5708" effort="3.2" velocity="10" />
   </joint>
   <link
-    name="link_2">
+    name="tail_link_2">
     <inertial>
       <origin xyz="-6.96295926472246E-09 -0.080424811499244 -5.62814089838616E-05" rpy="0 0 0" />
       <mass value="0.0763189346847985" />
@@ -687,12 +687,12 @@
   </link>
   <joint name="tail_elbow_joint" type="revolute">
     <origin xyz="0.22094 0.00071851 0" rpy="0 0 0" />
-    <parent link="link_1_1" />
-    <child link="link_2" />
+    <parent link="tail_link_1_1" />
+    <child link="tail_link_2" />
     <axis xyz="0 0 1" />
     <limit lower="0" upper="1.5708" effort="3.2" velocity="10" />
   </joint>
-  <link name="gripper">
+  <link name="tail_gripper">
     <inertial>
       <origin xyz="0.0573436204221779 -0.0395765636354563 -0.00060674366183752" rpy="0 0 0" />
       <mass value="0.203470349399239" />
@@ -714,13 +714,13 @@
       </geometry>
     </collision>
   </link>
-  <joint name="gripper_fixed_joint" type="fixed">
+  <joint name="tail_gripper_fixed_joint" type="fixed">
     <origin xyz="-0.0444441987014288 -0.336718519125746 0" rpy="3.14159265358979 0 -1.57079632679503" />
-    <parent link="link_2" />
-    <child link="gripper" />
+    <parent link="tail_link_2" />
+    <child link="tail_gripper" />
     <axis xyz="0 0 0" />
   </joint>
-  <link name="link_1_2">
+  <link name="tail_link_1_2">
     <inertial>
       <origin xyz="-0.0314199921617841 -0.00071837333398065 0.00385190919585071" rpy="0 0 0" />
       <mass value="0.0948432334787272" />
@@ -743,13 +743,13 @@
       </geometry>
     </collision>
   </link>
-  <joint name="link_1_2" type="fixed">
+  <joint name="tail_link_1_2" type="fixed">
     <origin xyz="0.131599993038923 0 -0.00899999748365095" rpy="-3.14159265358979 0 0" />
-    <parent link="link_1_1" />
-    <child link="link_1_2" />
+    <parent link="tail_link_1_1" />
+    <child link="tail_link_1_2" />
     <axis xyz="0 0 0" />
   </joint>
-  <link name="motor_2">
+  <link name="tail_motor_2">
     <inertial>
       <origin xyz="0.000415160647521215 -0.00599711221017367 0.000853420896040624" rpy="0 0 0" />
       <mass value="0.293750772256237" />
@@ -771,13 +771,13 @@
       </geometry>
     </collision>
   </link>
-  <joint name="motor_2" type="fixed">
+  <joint name="tail_motor_2" type="fixed">
     <origin xyz="0.0642499999999967 0.0520000037921046 0" rpy="-3.14159265358978 1.04719755119654 1.57079632679491" />
-    <parent link="motor_bracket" />
-    <child link="motor_2" />
+    <parent link="tail_motor_bracket" />
+    <child link="tail_motor_2" />
     <axis xyz="0 0 0" />
   </joint>
-  <link name="motor_3">
+  <link name="tail_motor_3">
     <inertial>
       <origin xyz="0.0010594901135863 -0.005997111629483 -0.000262627762671955" rpy="0 0 0" />
       <mass value="0.293750772256237" />
@@ -799,14 +799,14 @@
       </geometry>
     </collision>
   </link>
-  <joint name="motor_3" type="fixed">
+  <joint name="tail_motor_3" type="fixed">
     <origin xyz="-0.0642499999999978 0.0520000040598411 0" rpy="3.14159265358978 1.04719755119673 -1.5707963267949" />
-    <parent link="motor_bracket" />
-    <child link="motor_3" />
+    <parent link="tail_motor_bracket" />
+    <child link="tail_motor_3" />
     <axis xyz="0 0 0" />
   </joint>
 
-    <link name="battery_asm">
+    <link name="tail_battery_asm">
     <inertial>
       <origin xyz="0.0055402336368483 0.0549433712373477 3.85298046699102E-07" rpy="0 0 0" />
       <mass value="0.792464358247873" />
@@ -828,10 +828,10 @@
       </geometry>
     </collision>
   </link>
-  <joint name="battery_mount" type="fixed">
+  <joint name="tail_battery_mount" type="fixed">
     <origin rpy="0 0 3.14159" xyz="0.20 0 0.055"/>
     <parent link="trunk"/>
-    <child link="battery_asm"/>
+    <child link="tail_battery_asm"/>
   </joint>
 </robot>
 
