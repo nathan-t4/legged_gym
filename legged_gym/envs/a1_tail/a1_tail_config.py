@@ -29,8 +29,7 @@
 # Copyright (c) 2021 ETH Zurich, Nikita Rudin
 
 from legged_gym.envs.base.legged_robot_config import LeggedRobotCfg, LeggedRobotCfgPPO
-''' TODO: [IMPLEMENT] Add motor parameters to URDF. See urdf/XML/joint. (Test motor to determine parameters) 
-'''
+
 class A1TailFlatCfg( LeggedRobotCfg ):
     class env( LeggedRobotCfg.env ):
         num_actions = 15 # number of joints
@@ -89,9 +88,9 @@ class A1TailFlatCfg( LeggedRobotCfg ):
     class rewards( LeggedRobotCfg.rewards ):
         class scales( LeggedRobotCfg.rewards.scales ):
             # Rewards in use.
-            tracking_lin_vel=1.0
+            tracking_lin_vel = 1.0
             tracking_ang_vel = 0.5   
-            powers=-0.0001
+            powers = -0.0001
 
             # Set remaining reward terms to zero.
             termination = -0.0        
