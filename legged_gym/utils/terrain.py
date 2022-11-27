@@ -58,10 +58,10 @@ class Terrain:
         self.tot_rows = int(cfg.num_rows * self.length_per_env_pixels) + 2 * self.border
 
         self.height_field_raw = np.zeros((self.tot_rows , self.tot_cols), dtype=np.int16)
-        if cfg.curriculum:
+        if cfg.selected:
+            self.selected_terrain(cfg.curriculum)
+        elif cfg.curriculum:
             self.curiculum()
-        elif cfg.selected:
-            self.selected_terrain()
         else:    
             self.randomized_terrain()   
         
@@ -91,19 +91,20 @@ class Terrain:
                 terrain = self.make_terrain(choice, difficulty)
                 self.add_terrain_to_map(terrain, i, j)
 
-    def selected_terrain(self):
+    def selected_terrain(self, curriculum=False):
         terrain_type = self.cfg.terrain_kwargs.pop('type')
         for k in range(self.cfg.num_sub_terrains):
             # Env coordinates in the world
             (i, j) = np.unravel_index(k, (self.cfg.num_rows, self.cfg.num_cols))
+            difficulty = i / self.cfg.num_rows if curriculum else np.random.choice([0.5, 0.75, 0.9])
 
             terrain = terrain_utils.SubTerrain("terrain",
                               width=self.width_per_env_pixels,
                               length=self.width_per_env_pixels,
                               vertical_scale=self.cfg.vertical_scale,
                               horizontal_scale=self.cfg.horizontal_scale)
-
-            eval(terrain_type)(terrain, **self.cfg.terrain_kwargs)
+            # print(f"terrain_kwargs: {self.cfg.terrain_kwargs}")
+            eval(terrain_type)(terrain, difficulty, **self.cfg.terrain_kwargs)
             self.add_terrain_to_map(terrain, i, j)
     
     def make_terrain(self, choice, difficulty):
@@ -186,7 +187,7 @@ def pit_terrain(terrain, depth, platform_size=1.):
     y2 = terrain.width // 2 + platform_size
     terrain.height_field_raw[x1:x2, y1:y2] = -depth
 
-def beam_terrain(terrain, beam_width):
+def beam_terrain(terrain, difficulty, beam_min_width):
     '''
     TODO: 
         add beam_length (x axis)
@@ -207,7 +208,8 @@ def beam_terrain(terrain, beam_width):
     center_x = terrain.length // 2
     center_y = terrain.width // 2
 
-    platform_size = 1 # [m]
+    beam_width = 2 * (1 - difficulty) + beam_min_width # linear curriculum
+    platform_size = 2 # [m]
 
     def meters_to_horizontal_scale(dim):
         return int(dim / terrain.horizontal_scale / 2)
@@ -215,7 +217,7 @@ def beam_terrain(terrain, beam_width):
     beam_width = meters_to_horizontal_scale(beam_width)
     platform_size = meters_to_horizontal_scale(platform_size)
 
-    terrain.height_field_raw = np.full(np.shape(terrain.height_field_raw), -1000) 
+    terrain.height_field_raw = np.full(np.shape(terrain.height_field_raw), -10) 
     terrain.height_field_raw[0 : terrain.length, center_y-beam_width : center_y + beam_width] = 0
     terrain.height_field_raw[center_x-platform_size: center_x+platform_size, center_y-platform_size : center_y+platform_size] = 0
     

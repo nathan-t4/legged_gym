@@ -33,20 +33,21 @@ from isaacgym import terrain_utils
 import numpy as np
 
 class A1TailBeamCfg( A1TailRoughCfg ):
+    # [TODO]: add curriculum -> let width of beam decrease as difficulty increases!
     class env( A1TailRoughCfg.env ):
         num_observations = 57 # flat: 57, rough: 244
 
     class terrain( A1TailRoughCfg.terrain ):
         mesh_type = 'trimesh'
-        curriculum = False # False: select unique terrain (instead of terrain defined by terrain_proportions)
+        curriculum = True
         measure_heights = False # False: blind robot
         selected = True # select a unique terrain type and pass all arguments through terrain_kwargs
         terrain_kwargs = {"type": "beam_terrain", 
-                          "beam_width": 0.4}
+                          "beam_min_width": 0.6}
 
     class commands( A1TailRoughCfg.commands):
         class ranges (A1TailRoughCfg.commands.ranges):
-            lin_vel_y = [0, 0] # [TODO] can try to relax later
+            # lin_vel_y = [0, 0] # [TODO] can try to relax later
             ang_vel_yaw = [0, 0]
             
 
@@ -76,12 +77,12 @@ class A1TailBeamCfg( A1TailRoughCfg ):
     class rewards( A1TailRoughCfg.rewards ):
         class scales( A1TailRoughCfg.rewards.scales ):
             # Rewards in use.
+            termination = -100.0 # [TODO]: add termination reward?  
             tracking_lin_vel = 1.0
             tracking_ang_vel = 0.5   
             powers = -0.0001
 
-            # Set remaining reward terms to zero.
-            termination = -0.0        
+            # Set remaining reward terms to zero.  
             lin_vel_z = 0.0
             ang_vel_xy = -0.0
             orientation = -0.0
@@ -95,7 +96,7 @@ class A1TailBeamCfg( A1TailRoughCfg ):
             action_rate = -0.0
             stand_still = -0.
         
-        only_positive_rewards = True # if true negative total rewards are clipped at zero (avoids early termination problems)
+        only_positive_rewards = False # if true negative total rewards are clipped at zero (avoids early termination problems)
         tracking_sigma = 0.1 # tracking reward = exp(-error^2/sigma)
         soft_dof_pos_limit = 0.9 # percentage of urdf limits, values above this limit are penalized
         soft_dof_vel_limit = 0.9
