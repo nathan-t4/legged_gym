@@ -43,11 +43,12 @@ class A1TailBeamCfg( A1TailRoughCfg ):
         measure_heights = False # False: blind robot
         selected = True # select a unique terrain type and pass all arguments through terrain_kwargs
         terrain_kwargs = {"type": "beam_terrain", 
-                          "beam_min_width": 0.6}
+                          "beam_min_width": 0.4,
+                          "beam_max_width": 1}
 
     class commands( A1TailRoughCfg.commands):
         class ranges (A1TailRoughCfg.commands.ranges):
-            # lin_vel_y = [0, 0] # [TODO] can try to relax later
+            lin_vel_y = [0, 0] # [TODO] can try to relax later
             ang_vel_yaw = [0, 0]
             
 
@@ -77,7 +78,7 @@ class A1TailBeamCfg( A1TailRoughCfg ):
     class rewards( A1TailRoughCfg.rewards ):
         class scales( A1TailRoughCfg.rewards.scales ):
             # Rewards in use.
-            termination = -100.0 # [TODO]: add termination reward?  
+            termination = -200.0 # termination reward?  
             tracking_lin_vel = 1.0
             tracking_ang_vel = 0.5   
             powers = -0.0001
@@ -97,7 +98,7 @@ class A1TailBeamCfg( A1TailRoughCfg ):
             stand_still = -0.
         
         only_positive_rewards = False # if true negative total rewards are clipped at zero (avoids early termination problems)
-        tracking_sigma = 0.25 # tracking reward = exp(-error^2/sigma)
+        tracking_sigma = 0.20 # tracking reward = exp(-error^2/sigma)
         soft_dof_pos_limit = 0.9 # percentage of urdf limits, values above this limit are penalized
         soft_dof_vel_limit = 0.9
         soft_torque_limit = 1.

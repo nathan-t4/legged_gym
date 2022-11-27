@@ -107,7 +107,8 @@ class Terrain:
                 difficulty = i / self.cfg.num_rows
                 eval(terrain_type)(terrain, difficulty, **self.cfg.terrain_kwargs)
             else:
-                eval(terrain_type)(terrain, **self.cfg.terrain_kwargs)
+                difficulty = np.random.choice([0.5, 0.75, 0.9])
+                eval(terrain_type)(terrain, difficulty,**self.cfg.terrain_kwargs)
             self.add_terrain_to_map(terrain, i, j)
     
     def make_terrain(self, choice, difficulty):
@@ -190,15 +191,8 @@ def pit_terrain(terrain, depth, platform_size=1.):
     y2 = terrain.width // 2 + platform_size
     terrain.height_field_raw[x1:x2, y1:y2] = -depth
 
-def beam_terrain(terrain, difficulty, beam_min_width):
+def beam_terrain(terrain, difficulty, beam_min_width, beam_max_width):
     '''
-    TODO: 
-        add beam_length (x axis)
-        add starting platform so robot can start with normal init pos 
-        adjust robot init pos to center of platform 
-
-        or change robot init pos to train special behavior?   
-
         <------------------------ terrain.length ------------------------>
         <-- 2 * platform_size -->   
         |-----------------------|
@@ -211,7 +205,7 @@ def beam_terrain(terrain, difficulty, beam_min_width):
     center_x = terrain.length // 2
     center_y = terrain.width // 2
 
-    beam_width = 2 * (1 - difficulty) + beam_min_width # linear curriculum
+    beam_width = (beam_max_width - beam_min_width) * (1 - difficulty) + beam_min_width # linear curriculum
     platform_size = 2 # [m]
 
     def meters_to_horizontal_scale(dim):
@@ -220,7 +214,7 @@ def beam_terrain(terrain, difficulty, beam_min_width):
     beam_width = meters_to_horizontal_scale(beam_width)
     platform_size = meters_to_horizontal_scale(platform_size)
 
-    terrain.height_field_raw = np.full(np.shape(terrain.height_field_raw), -10) 
+    terrain.height_field_raw = np.full(np.shape(terrain.height_field_raw), -1000) 
     terrain.height_field_raw[0 : terrain.length, center_y-beam_width : center_y + beam_width] = 0
     terrain.height_field_raw[center_x-platform_size: center_x+platform_size, center_y-platform_size : center_y+platform_size] = 0
     
