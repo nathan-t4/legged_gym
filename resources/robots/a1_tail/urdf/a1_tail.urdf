@@ -631,7 +631,7 @@
     <parent link="tail_base_link" />
     <child link="tail_motor_bracket" />
     <axis xyz="0 1 0" />
-    <limit lower="-3.1416" upper="3.1416" effort="3.2" velocity="10" />
+    <limit lower="-3.1416" upper="3.1416" effort="5" velocity="10" />
   </joint>
   <link name="tail_link_1_1">
     <inertial>
@@ -660,7 +660,7 @@
     <parent link="tail_motor_bracket" />
     <child link="tail_link_1_1" />
     <axis xyz="0 0 -1" />
-    <limit lower="-1.5708" upper="1.5708" effort="3.2" velocity="10" />
+    <limit lower="-1.5708" upper="1.5708" effort="5" velocity="10" />
   </joint>
   <link
     name="tail_link_2">
@@ -690,7 +690,7 @@
     <parent link="tail_link_1_1" />
     <child link="tail_link_2" />
     <axis xyz="0 0 1" />
-    <limit lower="0" upper="1.5708" effort="3.2" velocity="10" />
+    <limit lower="0" upper="1.5708" effort="5" velocity="10" />
   </joint>
   <link name="tail_gripper">
     <inertial>

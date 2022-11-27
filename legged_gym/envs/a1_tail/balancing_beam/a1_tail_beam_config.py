@@ -28,22 +28,29 @@
 #
 # Copyright (c) 2021 ETH Zurich, Nikita Rudin
 
-from legged_gym.envs.base.legged_robot_config import LeggedRobotCfg, LeggedRobotCfgPPO
+from legged_gym.envs.a1_tail.rough_terrain.a1_tail_rough_config import A1TailRoughCfg, A1TailRoughCfgPPO
+from isaacgym import terrain_utils
+import numpy as np
 
-class A1TailFlatCfg( LeggedRobotCfg ):
-    class env( LeggedRobotCfg.env ):
-        num_actions = 15 # number of joints
+class A1TailBeamCfg( A1TailRoughCfg ):
+    class env( A1TailRoughCfg.env ):
         num_observations = 57 # flat: 57, rough: 244
 
-    class terrain( LeggedRobotCfg.terrain ):
-        mesh_type = 'plane'
-        measure_heights = False
+    class terrain( A1TailRoughCfg.terrain ):
+        mesh_type = 'trimesh'
+        curriculum = False # False: select unique terrain (instead of terrain defined by terrain_proportions)
+        measure_heights = False # False: blind robot
+        selected = True # select a unique terrain type and pass all arguments through terrain_kwargs
+        terrain_kwargs = {"type": "beam_terrain", 
+                          "beam_width": 0.4}
 
-    class commands( LeggedRobotCfg.commands):
-        class ranges (LeggedRobotCfg.commands.ranges):
+    class commands( A1TailRoughCfg.commands):
+        class ranges (A1TailRoughCfg.commands.ranges):
+            lin_vel_y = [0, 0] # [TODO] can try to relax later
             ang_vel_yaw = [0, 0]
+            
 
-    class init_state( LeggedRobotCfg.init_state ):
+    class init_state( A1TailRoughCfg.init_state ):
         pos = [0.0, 0.0, 0.42] # x,y,z [m]
         default_joint_angles = { # = target angles [rad] when action = 0.0
             'FL_hip_joint': 0.1,   # [rad]
@@ -65,28 +72,9 @@ class A1TailFlatCfg( LeggedRobotCfg ):
             'tail_shoulder_pitch_joint': 0, # [rad]
             'tail_elbow_joint': 0   # [rad]
         }
-
-    class control( LeggedRobotCfg.control ):
-        # PD Drive parameters:
-        control_type = 'P'
-        stiffness = {'hip': 20, 'thigh': 20, 'calf': 20, 'tail': 1}  # [N*m/rad]
-        damping = {'hip': 0.5, 'thigh': 0.5, 'calf': 0.5, 'tail': 0}     # [N*m*s/rad]
-        # action scale: target angle = actionScale * action + defaultAngle
-        action_scale = 0.25
-        # decimation: Number of control action updates @ sim DT per policy DT
-        decimation = 4
-
-    class asset( LeggedRobotCfg.asset ):
-        file = '{LEGGED_GYM_ROOT_DIR}/resources/robots/a1_tail/urdf/a1_tail.urdf'
-        name = "a1_tail"
-        foot_name = "foot"
-        penalize_contacts_on = ["thigh", "calf", "tail"] #
-        terminate_after_contacts_on = ["base"]
-        self_collisions = 1 # 1 to disable, 0 to enable...bitwise filter
-        flip_visual_attachments = False
   
-    class rewards( LeggedRobotCfg.rewards ):
-        class scales( LeggedRobotCfg.rewards.scales ):
+    class rewards( A1TailRoughCfg.rewards ):
+        class scales( A1TailRoughCfg.rewards.scales ):
             # Rewards in use.
             tracking_lin_vel = 1.0
             tracking_ang_vel = 0.5   
@@ -113,11 +101,11 @@ class A1TailFlatCfg( LeggedRobotCfg ):
         soft_dof_vel_limit = 0.9
         soft_torque_limit = 1.
 
-class A1TailFlatCfgPPO( LeggedRobotCfgPPO ):
-    class algorithm( LeggedRobotCfgPPO.algorithm ):
+class A1TailBeamCfgPPO( A1TailRoughCfgPPO ):
+    class algorithm( A1TailRoughCfgPPO.algorithm ):
         entropy_coef = 0.01
-    class runner( LeggedRobotCfgPPO.runner ):
+    class runner( A1TailRoughCfgPPO.runner ):
         run_name = ''
-        experiment_name = 'flat_a1_tail'
+        experiment_name = 'beam_a1_tail'
 
   
