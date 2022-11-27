@@ -91,12 +91,11 @@ class Terrain:
                 terrain = self.make_terrain(choice, difficulty)
                 self.add_terrain_to_map(terrain, i, j)
 
-    def selected_terrain(self, curriculum=False):
+    def selected_terrain(self, curriculum):
         terrain_type = self.cfg.terrain_kwargs.pop('type')
         for k in range(self.cfg.num_sub_terrains):
             # Env coordinates in the world
             (i, j) = np.unravel_index(k, (self.cfg.num_rows, self.cfg.num_cols))
-            difficulty = i / self.cfg.num_rows if curriculum else np.random.choice([0.5, 0.75, 0.9])
 
             terrain = terrain_utils.SubTerrain("terrain",
                               width=self.width_per_env_pixels,
@@ -104,7 +103,11 @@ class Terrain:
                               vertical_scale=self.cfg.vertical_scale,
                               horizontal_scale=self.cfg.horizontal_scale)
             # print(f"terrain_kwargs: {self.cfg.terrain_kwargs}")
-            eval(terrain_type)(terrain, difficulty, **self.cfg.terrain_kwargs)
+            if curriculum:
+                difficulty = i / self.cfg.num_rows
+                eval(terrain_type)(terrain, difficulty, **self.cfg.terrain_kwargs)
+            else:
+                eval(terrain_type)(terrain, **self.cfg.terrain_kwargs)
             self.add_terrain_to_map(terrain, i, j)
     
     def make_terrain(self, choice, difficulty):
